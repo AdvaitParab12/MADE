@@ -1,6 +1,6 @@
 "use client";
 import { Button, HeroUIProvider } from "@heroui/react";
-import Form from "@/component/Form";
+import Form from "@/components/Form";
 
 export default function Home() {
   return (
