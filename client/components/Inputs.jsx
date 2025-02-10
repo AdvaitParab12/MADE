@@ -1,43 +1,63 @@
-import { Input } from "@heroui/react";
-import { useRef, useState } from "react";
-import React from "react";
+import React, { useRef, useState } from "react";
+import { Button, Input } from "@heroui/react";
 import { SendHorizontalIcon, UploadIcon } from "lucide-react";
 
-function Inputs() {
+function Inputs({ socket, id, name, setMessages }) {
   const [input, setInput] = useState("");
   const inputUpload = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (input) {
-      console.log(input);
-      setInput("");
-    } else {
-      inputUpload.current.click();
-    }
-  };
-
   const handleFileUpload = (e) => {
-    const file = e.target.files[0].type;
-    if (file.includes("image")) {
-      console.log("image");
-    }
+    const file = e.target.files[0];
+    console.log(file);
+
     const reader = new FileReader();
 
     reader.onloadend = function () {
-    
+      // Here is the Base64 string
       const base64String = reader.result;
-      console.log(base64String);
+
+      const msg = {
+        type: "image",
+        content: base64String,
+        user: {
+          id: id,
+          name: name,
+        },
+      };
+
+      socket.emit("message", msg);
+      setMessages((prev) => [...prev, msg]);
     };
 
     if (file) {
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Converts image to base64 URI
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!input) {
+      inputUpload.current.click();
+    } else {
+      const msg = {
+        type: input.startsWith("http") ? "link" : "text",
+        content: input,
+        user: {
+          id: id,
+          name: name,
+        },
+      };
+
+      socket.emit("message", msg);
+      setMessages((prev) => [...prev, msg]);
+      setInput("");
     }
   };
 
   return (
     <form
-      className="absolute bottom-0 left-0 w-full sm:mb-5 flex gap-4 p-4"
+      className="absolute bottom-0 left-0 w-full sm:mb-5 flex sm:gap-1"
       onSubmit={handleSubmit}
     >
       <Input
@@ -47,20 +67,19 @@ function Inputs() {
         onChange={(e) => setInput(e.target.value)}
         autoComplete="off"
       />
+
       <input
         type="file"
-        hidden
         name="file"
         ref={inputUpload}
+        hidden
+        accept="image/png, image/jpeg"
         onChange={handleFileUpload}
       />
-      <button
-        className="h-auto bg-green-500 p-4 rounded-xl flex items-center justify-center"
-        aria-label="Send Message"
-        type="submit"
-      >
-        {input ? <SendHorizontalIcon size={20} /> : <UploadIcon />}
-      </button>
+
+      <Button className="h-auto bg-blue-400" type="submit">
+        {input ? <SendHorizontalIcon /> : <UploadIcon />}
+      </Button>
     </form>
   );
 }

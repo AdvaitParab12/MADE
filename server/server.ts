@@ -28,6 +28,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", async (data) => {
+    console.log("New message");
+    console.log(data);
     if (data.type === "text" && data.content.startsWith("@ai")) {
       const query = {
         prompt: data.content.replaceAll("@ai"),
