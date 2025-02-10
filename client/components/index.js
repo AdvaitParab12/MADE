@@ -1,11 +1,5 @@
 import SignUp from './SignUp'
-import Messages from './Messages'
-import Chats from './Chats'
+import { Messages, Chat, Typing, NewUser } from "./Messages";
 import Inputs from './Inputs'
 
-export {
-  SignUp,
-  Messages,
-  Chats,
-  Inputs
-}
+export { Chat, Inputs, Messages, SignUp, Typing, NewUser };
