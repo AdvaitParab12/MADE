@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const socket = io(
-  "https://refactored-rotary-phone-5g4x69w5vxrvh4p96-8000.app.github.dev/"
+  "https://turbo-succotash-x59v647p4p77fv7qx-8000.app.github.dev/"
 );
 
 export default function Home() {
@@ -20,13 +20,11 @@ export default function Home() {
 
   return (
     <HeroUIProvider>
-      <div className="min-h-screen max-h-screen">
+      <div className="min-h-screen max-h-screen bg-gradient-to-r from-[#fbed96] to-[#abecd6]">
         {user ? (
-          <div className="bg-green-100 min-h-screen">
-            <div className="container mx-auto relative min-h-screen p-4">
-              <Messages />
-              <Inputs socket={socket} id={socket.id} name={user} setMessages={setMessages}/>
-            </div>
+          <div className="container mx-auto relative min-h-screen p-4">
+            <Messages messages={messages} id={socket.id} />
+            <Inputs socket={socket} name={user} setMessages={setMessages} />
           </div>
         ) : (
           <SignUp setUser={setUser} socket={socket} />

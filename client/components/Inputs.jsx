@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Button, Input } from "@heroui/react";
 import { SendHorizontalIcon, UploadIcon } from "lucide-react";
 
-function Inputs({ socket, id, name, setMessages }) {
+function Inputs({ socket, name, setMessages }) {
   const [input, setInput] = useState("");
   const inputUpload = useRef(null);
 
@@ -20,7 +20,7 @@ function Inputs({ socket, id, name, setMessages }) {
         type: "image",
         content: base64String,
         user: {
-          id: id,
+          id: socket.id,
           name: name,
         },
       };
@@ -44,7 +44,7 @@ function Inputs({ socket, id, name, setMessages }) {
         type: input.startsWith("http") ? "link" : "text",
         content: input,
         user: {
-          id: id,
+          id: socket.id,
           name: name,
         },
       };
@@ -57,7 +57,7 @@ function Inputs({ socket, id, name, setMessages }) {
 
   return (
     <form
-      className="absolute bottom-0 left-0 w-full sm:mb-5 flex sm:gap-1"
+      className="absolute bottom-0 w-full sm:mb-5 flex sm:gap-1 max-w-6xl left-1/2 -translate-x-1/2"
       onSubmit={handleSubmit}
     >
       <Input
