@@ -4,17 +4,24 @@ import { Messages, Inputs, SignUp } from "@/components";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(
-  "https://turbo-succotash-x59v647p4p77fv7qx-8000.app.github.dev/"
-);
+const socket = io("active-almeria-advaitenterprise-d5669e15.koyeb.app/");
 
 export default function Home() {
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket.on("user_joined", (data) => {
-      console.log(data);
+    socket.on("new_message", (msg) => {
+      setMessages((prevState) => [...prevState, msg]);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("new_user", (name) => {
+      setMessages((prevState) => [
+        ...prevState,
+        { type: "user", content: name },
+      ]);
     });
   }, []);
 
