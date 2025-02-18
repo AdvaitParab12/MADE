@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const socket = io(
-  "active-almeria-advaitenterprise-d5669e15.koyeb.app/"
+  "active-almeria-advaitenterprise-d5669e15.koyeb.app"
 );
 
 export default function Home() {
