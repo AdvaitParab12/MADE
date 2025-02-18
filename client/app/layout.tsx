@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MADE Room",
+  title: "GHOST Room",
   description: "Anonymous chat room",
 };
 
