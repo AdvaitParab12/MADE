@@ -8,7 +8,6 @@ function Inputs({ socket, name, setMessages }) {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file);
 
     const reader = new FileReader();
 
@@ -26,7 +25,7 @@ function Inputs({ socket, name, setMessages }) {
       };
 
       socket.emit("message", msg);
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prevState) => [...prevState, msg]);
     };
 
     if (file) {
@@ -36,6 +35,7 @@ function Inputs({ socket, name, setMessages }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    socket.emit("typing", { name, status: false });
 
     if (!input) {
       inputUpload.current.click();
@@ -50,21 +50,25 @@ function Inputs({ socket, name, setMessages }) {
       };
 
       socket.emit("message", msg);
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prevState) => [...prevState, msg]);
+
       setInput("");
     }
   };
 
   return (
     <form
-      className="absolute bottom-0 w-full sm:mb-5 flex sm:gap-1 max-w-6xl left-1/2 -translate-x-1/2"
+      className="absolute bottom-0  w-full max-w-6xl left-1/2 -translate-x-1/2 sm:mb-5 flex sm:gap-1"
       onSubmit={handleSubmit}
     >
       <Input
         type="text"
         label="Enter your message"
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => {
+          setInput(e.target.value);
+          socket.emit("typing", { name, status: true });
+        }}
         autoComplete="off"
       />
 

@@ -53,7 +53,7 @@ function SignUp({ setUser, socket }) {
               alt="made logo"
               height={40}
               radius="sm"
-              src="./chat.png"
+              src="favicon.ico"
               width={40}
             />
             <div className="flex flex-col">
